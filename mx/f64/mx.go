@@ -84,6 +84,9 @@ func (m *Mx) Transpose() *Mx {
 	return m
 }
 
+func (m *Mx) Size() (nr, nc int) { return m.nr, m.nc }
+func (m *Mx) Len() (n int)       { return m.len }
+
 func (m *Mx) String() string {
 	s := ""
 	for i := 0; i < m.nr; i++ {

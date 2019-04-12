@@ -1,6 +1,8 @@
 package blas
 
-import "math"
+import (
+	"math"
+)
 
 func Scale(n int, x []float64, incx int, s float64) {
 	for i := 0; i < n; i += incx {
