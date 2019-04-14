@@ -2,6 +2,7 @@ package f64
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 type Mx struct {
@@ -69,6 +70,14 @@ func Diag(v []float64, k int) *Mx {
 		for i, e := range v {
 			m.data[m.Sub2ind(i-k, i-k)+k] = e
 		}
+	}
+	return m
+}
+
+func Rand(nr, nc int) *Mx {
+	m := Zeros(nr, nc)
+	for i := 0; i < m.len; i++ {
+		m.data[i] = rand.Float64()
 	}
 	return m
 }

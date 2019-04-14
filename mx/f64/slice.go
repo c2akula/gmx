@@ -1,34 +1,22 @@
 package f64
 
-type Submx struct {
-	Mx
-}
+// Row extracts the ith row from matrix m
+func (m *Mx) Row(i int) *Mx { return m.Blk(i, 0, 1, m.nc) }
 
-type Rng struct {
-	b, e int
-}
+// Col extracts the jth row from matrix m
+func (m *Mx) Col(j int) *Mx { return m.Blk(0, j, m.nr, 1) }
 
-func (m *Mx) Slc(i, j Rng) *Submx {
-	s := &Submx{}
-	s.data = m.data[m.Sub2ind(i.b, j.b) : m.Sub2ind(i.e, j.e)+1]
-	s.nr, s.nc = i.e-i.b+1, j.e-j.b+1
+// Blk extracts the submatrix of size (nr,nc) starting at m(i,j)
+func (m *Mx) Blk(i, j int, nr, nc int) *Mx {
+	s := &Mx{}
+	s.data = m.data[m.Sub2ind(i, j):]
+	s.nr, s.nc = nr, nc
 	s.rs, s.cs = m.rs, m.cs
 	s.len = s.nr * s.nc
 	return s
 }
 
-// Row extracts the ith row from matrix m
-func (m *Mx) Row(i int) *Submx { return m.Slc(Rng{b: i, e: i}, Rng{b: 0, e: m.nc - 1}) }
-
-// Col extracts the jth row from matrix m
-func (m *Mx) Col(j int) *Submx { return m.Slc(Rng{b: 0, e: m.nr - 1}, Rng{b: j, e: j}) }
-
-// Blk extracts the submatrix of size (nr,nc) starting at m(i,j)
-func (m *Mx) Blk(i, j int, nr, nc int) *Submx {
-	return m.Slc(Rng{b: i, e: i + nr - 1}, Rng{b: j, e: j + nc - 1})
-}
-
-func (m *Mx) Diag(k int) *Submx {
+func (m *Mx) Diag(k int) *Mx {
 	n := mini(m.nc, m.nc)
 	di, dj := 0, 0
 	if k < 0 {
@@ -38,7 +26,7 @@ func (m *Mx) Diag(k int) *Submx {
 		dj = k
 		n = mini(m.nr, m.nc-k)
 	}
-	s := &Submx{}
+	s := &Mx{}
 	s.data = m.data[m.Sub2ind(di, dj):]
 	s.rs, s.cs = n, m.cs+m.nc
 	s.nr, s.nc = 1, n

@@ -14,11 +14,17 @@ func (m *Mx) Scale(v float64) *Mx {
 
 	if m.IsTranspose() {
 		for j := 0; j < m.nc; j++ {
-			m.Col(j).Scale(v)
+			mc := m.Col(j)
+			for i := 0; i < m.nr; i++ {
+				mc.data[mc.Sub2ind(i, 0)] *= v
+			}
 		}
 	} else {
 		for i := 0; i < m.nr; i++ {
-			m.Row(i).Scale(v)
+			mr := m.Row(i)
+			for j := 0; j < m.nc; j++ {
+				mr.data[mr.Sub2ind(0, j)] *= v
+			}
 		}
 	}
 	return m

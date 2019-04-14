@@ -1,15 +1,5 @@
 package blas
 
-import (
-	"math"
-)
-
-func Scale(n int, x []float64, incx int, s float64) {
-	for i := 0; i < n; i += incx {
-		x[i] *= s
-	}
-}
-
 func Iaxpy(n int, a float64, x []float64, incx int, y []float64, incy int) {
 	for i, ix, iy := 0, 0, 0; i < n; i, ix, iy = i+1, ix+incx, iy+incy {
 		y[iy] += a * x[ix]
@@ -34,12 +24,4 @@ func UDot(n int, x, y []float64) (s float64) {
 		s += xe * y[i]
 	}
 	return
-}
-
-func Norm(n int, x []float64, incx int) (s float64) {
-	for i, k := 0, 0; i < n; i, k = i+1, k+incx {
-		xk := x[k]
-		s += xk * xk
-	}
-	return math.Sqrt(s)
 }
